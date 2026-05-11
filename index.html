@@ -1,147 +1,166 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OCR L CELL - Multi Struk Pro</title>
-  <style>
-    :root { --primary: #4f46e5; --bg: #f8fafc; }
-    body { background: var(--bg); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; color: #333; }
-    .container { max-width: 800px; margin: 0 auto; }
-    .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px; }
-    h2 { text-align: center; color: var(--primary); margin-top: 0; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    input, select, button { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
-    label { font-size: 12px; font-weight: bold; color: #666; margin-bottom: 4px; display: block; }
-    .full { grid-column: 1 / -1; }
-    
-    .upload-btn { 
-        background: var(--primary); color: white; font-weight: bold; 
-        text-align: center; padding: 15px; border-radius: 8px; 
-        display: block; position: relative; overflow: hidden; cursor: pointer;
-    }
-    #imageInput {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        opacity: 0; cursor: pointer; font-size: 100px;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OCR L CELL - Multi Struk Pro</title>
+    <style>
+      :root { --primary: #4f46e5; --bg: #f8fafc; }
+      body { background: var(--bg); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; color: #333; }
+      .container { max-width: 800px; margin: 0 auto; }
+      .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px; }
+      h2 { text-align: center; color: var(--primary); margin-top: 0; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      input, select, button { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
+      label { font-size: 12px; font-weight: bold; color: #666; margin-bottom: 4px; display: block; }
+      .full { grid-column: 1 / -1; }
+      
+      .upload-btn { 
+          background: var(--primary); color: white; font-weight: bold; 
+          text-align: center; padding: 15px; border-radius: 8px; 
+          display: block; position: relative; overflow: hidden; cursor: pointer;
+      }
+      #imageInput {
+          position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+          opacity: 0; cursor: pointer; font-size: 100px;
+      }
 
-    #struk-container { 
-      background: #fff; border: 1px dashed #999; padding: 20px; 
-      font-family: 'Courier New', Courier, monospace; line-height: 1.2;
-      max-width: 350px; margin: 20px auto; color: #000;
-    }
-    .line { border-top: 1px dashed #000; margin: 8px 0; }
-    .text-center { text-align: center; }
-    .flex-space { display: flex; justify-content: center; }
+      /* PERBAIKAN: Ukuran pas untuk printer 58mm */
+      #struk-container { 
+          background: #fff;
+          padding: 5px;
+          font-family: 'Courier New', Courier, monospace;
+          line-height: 1.2;
+          width: 52mm;
+          max-width: 52mm;
+          margin: 20px auto;
+          color: #000;
+          border: none !important;
+      }
+      .line { border-top: 1px dashed #000; margin: 8px 0; }
+      .text-center { text-align: center; }
+      .flex-space { display: flex; justify-content: center; }
 
-    .btn-group { display: flex; gap: 10px; margin-top: 20px; }
-    .btn-print { background: #10b981; color: white; border: none; font-weight: bold; }
-    .btn-download { background: #f59e0b; color: white; border: none; font-weight: bold; }
+      .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+      .btn-print { background: #10b981; color: white; border: none; font-weight: bold; }
+      .btn-download { background: #f59e0b; color: white; border: none; font-weight: bold; }
 
-    @media print {
-      body * { visibility: hidden; }
-      #struk-container, #struk-container * { visibility: visible; }
-      #struk-container { position: absolute; left: 0; top: 0; border: none; width: 100%; max-width: 100%; }
-      .no-print { display: none !important; }
-    }
-  </style>
-</head>
-<body>
+      /* PERBAIKAN: Hilangkan margin browser saat print */
+      @page {
+          size: 58mm auto;
+          margin: 0;
+      }
 
-<div class="container">
-  <div class="card no-print">
-    <h2>📸 SCAN STRUK L CELL</h2>
-    <div class="upload-btn">
-      KLIK UNTUK FOTO / UPLOAD STRUK
-      <input type="file" id="imageInput" accept="image/*" enctype="multipart/form-data">
+      @media print {
+          body * { visibility: hidden; }
+          #struk-container, #struk-container * { visibility: visible; }
+          #struk-container { 
+              position: absolute; 
+              left: 0; 
+              top: 0; 
+              width: 52mm !important;
+              max-width: 52mm !important;
+              border: none !important;
+              margin: 0 !important;
+              padding: 5px !important;
+          }
+          .no-print { display: none !important; }
+      }
+    </style>
+  </head>
+  <body>
+
+  <div class="container">
+    <div class="card no-print">
+      <h2>📸 SCAN STRUK L CELL</h2>
+      <div class="upload-btn">
+        KLIK UNTUK FOTO / UPLOAD STRUK
+        <input type="file" id="imageInput" accept="image/*" enctype="multipart/form-data">
+      </div>
+      <div id="status" style="text-align:center; margin-top:10px; font-weight:bold; color:var(--primary);"></div>
     </div>
-    <div id="status" style="text-align:center; margin-top:10px; font-weight:bold; color:var(--primary);"></div>
+
+    <div class="card no-print">
+      <div class="grid" id="editForm">
+        <div class="full">
+          <label>Tipe Struk</label>
+          <select id="f_tipe" onchange="updateUI()">
+            <option value="BCA">BCA Transfer</option>
+            <option value="GOPAY">GoPay / Topup</option>
+            <option value="PLN">PLN (Token/Tagihan)</option>
+          </select>
+        </div>
+        <div>
+          <label>Tanggal & Waktu</label>
+          <input type="text" id="f_waktu" oninput="sync()">
+        </div>
+        <div>
+          <label id="label_bank">Bank Tujuan / Provider</label>
+          <input type="text" id="f_bank" oninput="sync()">
+        </div>
+        <div class="full">
+          <label id="label_nama">Nama Penerima / Pelanggan</label>
+          <input type="text" id="f_nama" oninput="sync()">
+        </div>
+        <div class="full">
+          <label id="label_tujuan">No. Rek / ID Pelanggan</label>
+          <input type="text" id="f_tujuan" oninput="sync()">
+        </div>
+        <div class="full" id="box_token" style="display:none;">
+          <label style="color: #4f46e5; font-weight: bold;">NOMOR TOKEN (20 DIGIT)</label>
+          <input type="text" id="f_token" oninput="sync()" placeholder="0000 0000 0000 0000 0000">
+        </div>
+        <div>
+          <label>Nominal (Pokok)</label>
+          <input type="number" id="f_nominal" oninput="hitungTotal()">
+        </div>
+        <div>
+          <label>Biaya Admin</label>
+          <input type="number" id="f_admin" oninput="hitungTotal()">
+        </div>
+        <div class="full">
+          <label>Total Pembayaran</label>
+          <input type="text" id="f_total" readonly style="background:#f1f5f9; font-weight:bold;">
+        </div>
+        <div class="full">
+          <label>ID Transaksi / Ref No.</label>
+          <input type="text" id="f_idtrx" oninput="sync()">
+        </div>
+      </div>
+      
+      <div class="btn-group">
+          <button class="btn-print" onclick="window.print()">🖨️ CETAK STRUK</button>
+          <button class="btn-download" onclick="downloadStruk()">📥 DOWNLOAD GAMBAR</button>
+      </div>
+    </div>
+
+    <div id="struk-container">
+      <div class="text-center">
+        <strong style="font-size:20px;">L CELL</strong><br>
+        <small>Bukti Transaksi Digital</small>
+      </div>
+      <div class="line"></div>
+      <div id="p_konten"></div>
+      <div class="line"></div>
+      <div class="text-center">
+        <strong>TERIMA KASIH</strong><br>
+      </div>
+    </div>
   </div>
 
-  <div class="card no-print">
-    <div class="grid" id="editForm">
-      <div class="full">
-        <label>Tipe Struk</label>
-        <select id="f_tipe" onchange="updateUI()">
-          <option value="BCA">BCA Transfer</option>
-          <option value="GOPAY">GoPay / Topup</option>
-          <option value="PLN">PLN (Token/Tagihan)</option>
-        </select>
-      </div>
-      <div>
-        <label>Tanggal & Waktu</label>
-        <input type="text" id="f_waktu" oninput="sync()">
-      </div>
-      <div>
-        <label id="label_bank">Bank Tujuan / Provider</label>
-        <input type="text" id="f_bank" oninput="sync()">
-      </div>
-      <div class="full">
-        <label id="label_nama">Nama Penerima / Pelanggan</label>
-        <input type="text" id="f_nama" oninput="sync()">
-      </div>
-      <div class="full">
-        <label id="label_tujuan">No. Rek / ID Pelanggan</label>
-        <input type="text" id="f_tujuan" oninput="sync()">
-      </div>
-      <div class="full" id="box_token" style="display:none;">
-        <label style="color: #4f46e5; font-weight: bold;">NOMOR TOKEN (20 DIGIT)</label>
-        <input type="text" id="f_token" oninput="sync()" placeholder="0000 0000 0000 0000 0000">
-      </div>
-      <div>
-        <label>Nominal (Pokok)</label>
-        <input type="number" id="f_nominal" oninput="hitungTotal()">
-      </div>
-      <div>
-        <label>Biaya Admin</label>
-        <input type="number" id="f_admin" oninput="hitungTotal()">
-      </div>
-      <div class="full">
-        <label>Total Pembayaran</label>
-        <input type="text" id="f_total" readonly style="background:#f1f5f9; font-weight:bold;">
-      </div>
-      <div class="full">
-        <label>ID Transaksi / Ref No.</label>
-        <input type="text" id="f_idtrx" oninput="sync()">
-      </div>
-    </div>
-    
-    <div class="btn-group">
-        <button class="btn-print" onclick="window.print()">🖨️ CETAK STRUK</button>
-        <button class="btn-download" onclick="downloadStruk()">📥 DOWNLOAD GAMBAR</button>
-    </div>
-  </div>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-  <div id="struk-container" style="padding: 30px;">
-    <div class="text-center">
-      <strong style="font-size:30px;">L CELL</strong><br>
-      <!-- <span style="font-size:14px;">Sleman, Yogyakarta</span><br> -->
-      <small>Bukti Transaksi Digital</small>
-    </div>
-    <div class="line"></div>
-    <div id="p_konten"></div>
-    <div class="line"></div>
-    <div class="text-center">
-      <strong>TERIMA KASIH</strong><br>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-<script>
+  <script>
   let data = { tipe: 'BCA', nama: '-', tujuan: '-', bank: '-', nominal: 0, admin: 3000, total: 0, waktu: '', idtrx: '-', token: '' };
 
-  // Fungsi Download Gambar
   function downloadStruk() {
     const struk = document.getElementById('struk-container');
     const status = document.getElementById('status');
     status.innerText = "⏳ Menyiapkan Gambar...";
     
-    // Gunakan html2canvas untuk menangkap elemen struk
     html2canvas(struk, {
-        scale: 2, // Meningkatkan kualitas gambar (HD)
+        scale: 2,
         backgroundColor: "#ffffff",
         logging: false
     }).then(canvas => {
@@ -188,12 +207,12 @@
       data.bank = txt.includes("Prabayar") ? "PLN PRABAYAR" : "PLN POSTPAID";
       data.nama = txt.match(/Nama Pelanggan\s+([^\n]+)/i)?.[1] || "-";
       if (data.nama === "-") {
-         for (let line of lines) {
-           if (line.includes("*") && line.length > 5 && !line.includes("Ref")) {
-             data.nama = line.replace(/[:]/g, "").trim();
-             break;
-           }
-         }
+        for (let line of lines) {
+          if (line.includes("*") && line.length > 5 && !line.includes("Ref")) {
+            data.nama = line.replace(/[:]/g, "").trim();
+            break;
+          }
+        }
       }
       data.tujuan = txt.match(/(?:No\. Pelanggan|Nomor Meter)\s?[:]?\s?(\d+)/i)?.[1] || "-";
       data.nominal = smartCleanNum(txt.match(/(?:Total Tagihan|Nominal|Total Pembayaran)\s?Rp?\s?([\d.,]+)/i)?.[1]);
@@ -264,26 +283,26 @@
     const idtrx = document.getElementById('f_idtrx').value;
     const token = document.getElementById('f_token').value;
 
-    let labelBank = (tipe === "PLN") ? "TIPE TRANSAKSI" : "BANK/ID";
+    let labelBank = (tipe === "PLN") ? "TIPE TRANAKSI" : "BANK/ID";
     let tokenSection = (tipe === "PLN" && token) ? `
       <div class="line"></div>
       <div class="text-center">
-        <span style="font-size:20px;">NOMOR TOKEN:</span><br>
-        <strong style="font-size:30px; letter-spacing:1px;">${token}</strong>
+        <span style="font-size:16px;">NOMOR TOKEN:</span><br>
+        <strong style="font-size:20px; letter-spacing:1px;">${token}</strong>
       </div>
     ` : "";
 
     document.getElementById('p_konten').innerHTML = `
-      <div class="flex-space" style="font-size:20px;"><span>TANGGAL:</span> <span>${waktu}</span></div>
+      <div class="flex-space" style="font-size:14px;"><span>TANGGAL:</span> <span>${waktu}</span></div>
       <div class="line"></div>
-      <div class="flex-space" style="font-size:25px;"><span>NAMA:</span></div>
-      <div class="flex-space" style="font-size:25px; text-align: center;"><span>${nama}</span></div>
+      <div class="flex-space" style="font-size:16px;"><span>NAMA:</span></div>
+      <div class="flex-space" style="font-size:16px; text-align: center;"><span>${nama}</span></div>
       <br>
-      <div class="flex-space" style="font-size:25px;"><span>${labelBank}:</span></div>
-      <div class="flex-space" style="font-size:25px;"><span>${bank}</span></div>
+      <div class="flex-space" style="font-size:16px;"><span>${labelBank}:</span></div>
+      <div class="flex-space" style="font-size:16px;"><span>${bank}</span></div>
       <br>
-      <div class="flex-space" style="font-size:25px;"><span>NO. TUJUAN/ID:</span></div>
-      <div class="flex-space" style="font-size:30px; font-weight: bold;"><span>${tujuan}</span></div>
+      <div class="flex-space" style="font-size:16px;"><span>NO. TUJUAN/ID:</span></div>
+      <div class="flex-space" style="font-size:20px; font-weight: bold;"><span>${tujuan}</span></div>
       
       ${tokenSection}
       <div class="line"></div>
@@ -303,6 +322,6 @@
   
   document.getElementById('f_admin').value = 3000;
   sync();
-</script>
-</body>
+  </script>
+  </body>
 </html>
