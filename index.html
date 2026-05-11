@@ -9,7 +9,7 @@
       body { background: var(--bg); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; color: #333; }
       .container { max-width: 800px; margin: 0 auto; }
       .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px; }
-      h2 { text-align: center; color: var(--primary); margin-top: 0; }
+      h1 { text-align: center; color: var(--primary); margin-top: 0; font-size:30px;}
       .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
       input, select, button { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
       label { font-size: 12px; font-weight: bold; color: #666; margin-bottom: 4px; display: block; }
@@ -96,7 +96,7 @@
 
   <div class="container">
     <div class="card no-print">
-      <h2>📸 SCAN STRUK L CELL</h2>
+      <h1>📸 SCAN STRUK L CELL</h1>
       <div class="upload-btn">
         KLIK UNTUK FOTO / UPLOAD STRUK
         <input type="file" id="imageInput" accept="image/*" enctype="multipart/form-data">
@@ -317,30 +317,30 @@
     ` : "";
 
     document.getElementById('p_konten').innerHTML = `
-      <div class="flex-space" style="font-size:14px;"><span>TANGGAL:</span> <span>${waktu}</span></div>
+      <div class="flex-space" style="font-size:15px;"><span>TANGGAL:</span> <span>${waktu}</span></div>
       <div class="line"></div>
-      <div class="flex-space" style="font-size:16px;"><span>NAMA:</span></div>
-      <div class="flex-space" style="font-size:16px; text-align: center;"><span>${nama}</span></div>
+      <div class="flex-space" style="font-size:20px;"><span>NAMA:</span></div>
+      <div class="flex-space" style="font-size:25px; text-align: center;"><span>${nama}</span></div>
       <br>
-      <div class="flex-space" style="font-size:16px;"><span>${labelBank}:</span></div>
-      <div class="flex-space" style="font-size:16px;"><span>${bank}</span></div>
+      <div class="flex-space" style="font-size:15px;"><span>${labelBank}:</span></div>
+      <div class="flex-space" style="font-size:20px;"><span>${bank}</span></div>
       <br>
-      <div class="flex-space" style="font-size:16px;"><span>NO. TUJUAN/ID:</span></div>
+      <div class="flex-space" style="font-size:15px;"><span>NO. TUJUAN/ID:</span></div>
       <div class="flex-space" style="font-size:20px; font-weight: bold;"><span>${tujuan}</span></div>
       
       ${tokenSection}
       <div class="line"></div>
-      <div class="flex-space" style="font-size:25px;"><span>NOMINAL:</span></div>
-      <div class="flex-space" style="font-size:25px;"><span>${fmtRp(nom)}</span></div>
+      <div class="flex-space" style="font-size:15px;"><span>NOMINAL:</span></div>
+      <div class="flex-space" style="font-size:20px;"><span>${fmtRp(nom)}</span></div>
       <br>
-      <div class="flex-space" style="font-size:25px;"><span>BIAYA ADMIN:</span></div>
-      <div class="flex-space" style="font-size:25px;"><span>${fmtRp(adm)}</span></div>
+      <div class="flex-space" style="font-size:15px;"><span>BIAYA ADMIN:</span></div>
+      <div class="flex-space" style="font-size:20px;"><span>${fmtRp(adm)}</span></div>
       <br>
       <div class="flex-space" style="font-weight:bold; font-size:30px;"><span>TOTAL:</span></div>
       <div class="flex-space" style="font-weight:bold; font-size:30px;"><span>${fmtRp(nom + adm)}</span></div>
       
       <div class="line"></div>
-      <div style="font-size:20px; word-break:break-all;"><span>REF: ${idtrx}</span></div>
+      <div style="font-size:15px; word-break:break-all;"><span>REF: ${idtrx}</span></div>
     `;
   }
   
