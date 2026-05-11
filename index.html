@@ -27,13 +27,16 @@
 
       #struk-container { 
           background: #fff;
-          padding: 5px;
+          padding: 10px;
           font-family: 'Courier New', Courier, monospace;
-          line-height: 1.2;
+          /* line-height: 1.2; */
           width: 52mm;
           max-width: 52mm;
           margin: 20px auto;
           color: #000;
+          border: none !important;
+          outline: none !important;
+          box-shadow: none !important;;
       }
       .line { border-top: 1px dashed #000; margin: 8px 0; }
       .text-center { text-align: center; }
@@ -184,13 +187,24 @@
     status.innerText = "⏳ Menyiapkan Gambar...";
     
     html2canvas(struk, {
-        scale: 2,
+        scale: 5,
+        dpi: 300,
         backgroundColor: "#ffffff",
-        logging: false
+        logging: false,
+        useCORS: true,
+        width: 210,
+        // Tips ampuh: Paksa border/outline hilang saat proses cloning
+        onclone: (clonedDoc) => {
+            const clonedStruk = clonedDoc.getElementById('struk-container');
+            clonedStruk.style.border = "none";
+            clonedStruk.style.outline = "none";
+            clonedStruk.style.boxShadow = "none";
+            clonedStruk.style.fontKerning = "none";
+        }
     }).then(canvas => {
         const link = document.createElement('a');
         link.download = `Struk_LCELL_${Date.now()}.png`;
-        link.href = canvas.toDataURL("image/png");
+        link.href = canvas.toDataURL("image/png", 1.0);
         link.click();
         status.innerText = "✅ Gambar Berhasil Diunduh!";
     }).catch(err => {
