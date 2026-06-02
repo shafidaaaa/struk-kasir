@@ -47,6 +47,7 @@
       .btn-download { background: #f59e0b; color: white; border: none; font-weight: bold; }
       .btn-share { background: #3b82f6; color: white; border: none; font-weight: bold; }
       .btn-txt { background: #8b5cf6; color: white; border: none; font-weight: bold; }
+      .btn-pdf { background: #ef4444; color: white; border: none; font-weight: bold; }
 
       /* ⟹ PERBAIKAN UTAMA: Hilangkan margin + outline browser */
       @page {
@@ -160,6 +161,7 @@
       <div class="btn-group">
           <button type="button" class="btn-print" onclick="window.print()">🖨️ CETAK STRUK</button>
           <button type="button" class="btn-download" onclick="downloadStruk()">📥 DOWNLOAD GAMBAR</button>
+          <button type="button" class="btn-pdf" onclick="downloadStrukPDF()">📄 DOWNLOAD PDF</button>
           <button type="button" class="btn-txt" onclick="downloadStrukText()">📄 DOWNLOAD TXT</button>
           <button type="button" class="btn-share" onclick="shareStruk()">📤 SHARE</button>
       </div>
@@ -181,6 +183,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <script>
   let data = { tipe: 'BCA', nama: '-', tujuan: '-', bank: '-', nominal: 0, admin: 3000, total: 0, waktu: '', idtrx: '-', token: '' };
@@ -213,6 +216,39 @@
         status.innerText = "✅ Gambar Berhasil Diunduh!";
     }).catch(err => {
         status.innerText = "❌ Gagal mendownload gambar";
+        console.error(err);
+    });
+  }
+
+  function downloadStrukPDF() {
+    const struk = document.getElementById('struk-container');
+    const status = document.getElementById('status');
+    status.innerText = "⏳ Menyiapkan PDF...";
+
+    html2canvas(struk, {
+        scale: 5,
+        dpi: 300,
+        backgroundColor: "#ffffff",
+        logging: false,
+        useCORS: true,
+        width: 210,
+        onclone: (clonedDoc) => {
+            const clonedStruk = clonedDoc.getElementById('struk-container');
+            clonedStruk.style.border = "none";
+            clonedStruk.style.outline = "none";
+            clonedStruk.style.boxShadow = "none";
+            clonedStruk.style.fontKerning = "none";
+        }
+    }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdfWidth = 58; // mm
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        const pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: [pdfWidth, pdfHeight] });
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`Struk_LCELL_${Date.now()}.pdf`);
+        status.innerText = '✅ PDF berhasil diunduh!';
+    }).catch(err => {
+        status.innerText = '❌ Gagal membuat PDF';
         console.error(err);
     });
   }
