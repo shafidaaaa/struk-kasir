@@ -42,10 +42,11 @@
       .text-center { text-align: center; }
       .flex-space { display: flex; justify-content: center; }
 
-      .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+      .btn-group { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
       .btn-print { background: #10b981; color: white; border: none; font-weight: bold; }
       .btn-download { background: #f59e0b; color: white; border: none; font-weight: bold; }
       .btn-share { background: #3b82f6; color: white; border: none; font-weight: bold; }
+      .btn-txt { background: #8b5cf6; color: white; border: none; font-weight: bold; }
 
       /* ⟹ PERBAIKAN UTAMA: Hilangkan margin + outline browser */
       @page {
@@ -159,6 +160,7 @@
       <div class="btn-group">
           <button type="button" class="btn-print" onclick="window.print()">🖨️ CETAK STRUK</button>
           <button type="button" class="btn-download" onclick="downloadStruk()">📥 DOWNLOAD GAMBAR</button>
+          <button type="button" class="btn-txt" onclick="downloadStrukText()">📄 DOWNLOAD TXT</button>
           <button type="button" class="btn-share" onclick="shareStruk()">📤 SHARE</button>
       </div>
     </div>
@@ -265,6 +267,56 @@
         status.innerText = "❌ Gagal membuat gambar untuk share.";
         console.error(err);
     });
+  }
+
+  function getStrukText() {
+    const tipe = document.getElementById('f_tipe').value;
+    const nom = parseInt(document.getElementById('f_nominal').value) || 0;
+    const adm = parseInt(document.getElementById('f_admin').value) || 0;
+    const waktu = document.getElementById('f_waktu').value || '-';
+    const bank = document.getElementById('f_bank').value || '-';
+    const tujuan = document.getElementById('f_tujuan').value || '-';
+    const nama = document.getElementById('f_nama').value || '-';
+    const idtrx = document.getElementById('f_idtrx').value || '-';
+    const token = document.getElementById('f_token').value || '';
+    const labelBank = (tipe === 'PLN') ? 'TIPE TRANSAKSI' : 'BANK / ID';
+    const lines = [
+      'L CELL',
+      'Bukti Transaksi Digital',
+      '----------------------------------------',
+      `TANGGAL      : ${waktu}`,
+      `NAMA         : ${nama}`,
+      `${labelBank.padEnd(13)}: ${bank}`,
+      `NO. TUJUAN/ID: ${tujuan}`
+    ];
+
+    if (tipe === 'PLN' && token) {
+      lines.push(`NOMOR TOKEN  : ${token}`);
+    }
+
+    lines.push(
+      '----------------------------------------',
+      `NOMINAL      : ${fmtRp(nom)}`,
+      `BIAYA ADMIN  : ${fmtRp(adm)}`,
+      `TOTAL        : ${fmtRp(nom + adm)}`,
+      '----------------------------------------',
+      `REF          : ${idtrx}`,
+      'TERIMA KASIH'
+    );
+
+    return lines.join('\n');
+  }
+
+  function downloadStrukText() {
+    const status = document.getElementById('status');
+    const text = getStrukText();
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `Struk_LCELL_${Date.now()}.txt`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+    status.innerText = '✅ Teks struk berhasil diunduh!';
   }
 
   function smartCleanNum(str) {
