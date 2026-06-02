@@ -240,7 +240,7 @@
             clonedStruk.style.fontKerning = "none";
         }
     }).then(canvas => {
-        const imgData = canvas.toDataURL('image/jpeg', 0.8);
+        const imgData = canvas.toDataURL('image/jpeg', 1.0);
         const pdfWidth = 58; // mm
         const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
         const pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: [pdfWidth, pdfHeight] });
