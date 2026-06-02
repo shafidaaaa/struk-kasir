@@ -226,8 +226,8 @@
     status.innerText = "⏳ Menyiapkan PDF...";
 
     html2canvas(struk, {
-        scale: 5,
-        dpi: 300,
+        scale: 2,
+        dpi: 150,
         backgroundColor: "#ffffff",
         logging: false,
         useCORS: true,
@@ -240,11 +240,11 @@
             clonedStruk.style.fontKerning = "none";
         }
     }).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
+        const imgData = canvas.toDataURL('image/jpeg', 0.8);
         const pdfWidth = 58; // mm
         const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
         const pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: [pdfWidth, pdfHeight] });
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
         pdf.save(`Struk_LCELL_${Date.now()}.pdf`);
         status.innerText = '✅ PDF berhasil diunduh!';
     }).catch(err => {
